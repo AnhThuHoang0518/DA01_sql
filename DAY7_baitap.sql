@@ -61,10 +61,12 @@ WHERE first_name = 'Amitah';
 
 --EX10
 select *, 
-SUBSTRING(TITLE FROM LENGTH(winery) + 2 FOR (POSITION(designation IN title) - LENGTH(winery) - 2)) AS YEAR,
+CAST(SUBSTRING(TITLE FROM LENGTH(winery) + 2 FOR (POSITION(designation IN title) - LENGTH(winery) - 2)) AS INT) AS YEAR,
 SUBSTRING(TITLE FROM POSITION('(' IN TITLE) + 1 FOR POSITION(')' IN TITLE) - POSITION('(' IN TITLE) - 1) 
 AS TITLE
 from winemag_p2
-WHERE (POSITION(designation IN title) - LENGTH(winery) - 2) > 0;
+WHERE (POSITION(designation IN title) - LENGTH(winery) - 2) > 0 AND country = 'Macedonia';
+
+
 
 
