@@ -49,6 +49,22 @@ WHERE (EXTRACT(DOY FROM activity_date) BETWEEN EXTRACT(DOY FROM DATE '2019-07-27
 GROUP BY activity_date;
 
 --EX8
+select COUNT(*)
+from employees
+WHERE EXTRACT(YEAR FROM joining_date) = 2022 AND 
+EXTRACT(MONTH FROM joining_date) BETWEEN 1 AND 7;
 
+--EX9
+select POSITION('a' IN first_name),
+from worker
+WHERE first_name = 'Amitah';
+
+--EX10
+select *, 
+SUBSTRING(TITLE FROM LENGTH(winery) + 2 FOR (POSITION(designation IN title) - LENGTH(winery) - 2)) AS YEAR,
+SUBSTRING(TITLE FROM POSITION('(' IN TITLE) + 1 FOR POSITION(')' IN TITLE) - POSITION('(' IN TITLE) - 1) 
+AS TITLE
+from winemag_p2
+WHERE (POSITION(designation IN title) - LENGTH(winery) - 2) > 0;
 
 
