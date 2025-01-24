@@ -19,4 +19,28 @@ GROUP BY manufacturer
 ORDER BY SUM(total_sales) DESC, manufacturer;
 
 --EX4
+SELECT EXTRACT (MONTH FROM submit_date) AS mth,
+product_id AS product,
+ROUND(AVG(stars), 2) AS avg_stars
+FROM reviews
+GROUP BY product_id, EXTRACT (MONTH FROM submit_date)
+ORDER BY EXTRACT (MONTH FROM submit_date), product_id;
+
+--EX5
+SELECT sender_id,
+COUNT (*) AS message_count
+FROM messages
+WHERE TO_CHAR(sent_date, 'MM-YYYY') = '08-2022'
+GROUP BY sender_id
+ORDER BY message_count DESC
+LIMIT 2;
+
+--EX6
+SELECT tweet_id
+FROM Tweets
+WHERE LENGTH(content) > 15;
+
+--EX7
+
+
 
