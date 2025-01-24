@@ -41,6 +41,14 @@ FROM Tweets
 WHERE LENGTH(content) > 15;
 
 --EX7
+SELECT
+activity_date AS DAY,
+COUNT(DISTINCT user_id) AS active_users
+FROM Activity
+WHERE (EXTRACT(DOY FROM activity_date) BETWEEN EXTRACT(DOY FROM DATE '2019-07-27') - 30 AND EXTRACT(DOY FROM DATE '2019-07-27')) AND EXTRACT(YEAR FROM activity_date) = 2019 
+GROUP BY activity_date;
+
+--EX8
 
 
 
