@@ -29,3 +29,15 @@ FROM callers;
 
 --EX4
 
+--EX5
+select pclass,
+SUM(CASE
+WHEN survived = 1 THEN 1
+ELSE 0
+END) AS SURVIVE,
+SUM(CASE
+WHEN survived = 0 THEN 1
+ELSE 0
+END) AS DIE
+from titanic
+GROUP BY pclass
