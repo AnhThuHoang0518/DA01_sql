@@ -28,6 +28,10 @@ END) AS DECIMAL)
 FROM callers;
 
 --EX4
+SELECT 
+NAME
+FROM CUSTOMER
+WHERE COALESCE(referee_id, 0) != 2;
 
 --EX5
 select pclass,
