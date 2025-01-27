@@ -34,6 +34,7 @@ FROM CUSTOMER
 WHERE COALESCE(referee_id, 0) != 2;
 
 --EX5
+--CACH 1
 select pclass,
 SUM(CASE
 WHEN survived = 1 THEN 1
@@ -44,4 +45,22 @@ WHEN survived = 0 THEN 1
 ELSE 0
 END) AS DIE
 from titanic
-GROUP BY pclass
+GROUP BY pclass;
+
+--CACH 2
+SELECT survived,
+SUM(CASE
+WHEN pclass = 1 THEN 1
+ELSE 0
+END) AS first_class,
+SUM(CASE
+WHEN pclass = 2 THEN 1
+ELSE 0
+END) AS second_classs,
+SUM(CASE
+WHEN pclass = 3 THEN 1
+ELSE 0
+END) AS third_class
+FROM titanic
+GROUP BY survived;
+
