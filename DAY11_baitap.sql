@@ -8,11 +8,9 @@ GROUP BY B.Continent;
 
 --EX2
 SELECT 
-ROUND(AVG(CASE
-WHEN A.signup_action = 'Confirmed' THEN 1
-ELSE 0
-END), 2) AS confirm_rate
-FROM texts AS A
-LEFT JOIN emails AS B ON A.email_id = B.email_id;
+ROUND(CAST(COUNT(B.email_id) AS DECIMAL)
+/COUNT(A.email_id), 2)
+FROM emails AS A
+LEFT JOIN texts AS B ON A.email_id = B.email_id AND signup_action = 'Confirmed';
 
 --EX3
