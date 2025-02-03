@@ -48,6 +48,18 @@ GROUP BY customer_id
 HAVING COUNT(DISTINCT product_category) = 3;
 
 --EX5
+SELECT MNG.employee_id, MNG.name, 
+COUNT(*) AS reports_count,
+AVG(EMP.age) AS average_age
+FROM Employees AS EMP
+INNER JOIN Employees AS MNG ON EMP.reports_to = MNG.employee_id
+GROUP BY MNG.employee_id
+ORDER BY MNG.employee_id;
+
+--EX6
+
+
+--EX7
 
 
 
