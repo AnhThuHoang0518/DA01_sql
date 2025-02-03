@@ -58,9 +58,22 @@ GROUP BY MNG.employee_id, MNG.name
 ORDER BY MNG.employee_id;
 
 --EX6
+-- Write your PostgreSQL query statement below
+SELECT product_name, SUM(unit) AS unit
+FROM Orders AS A
+LEFT JOIN Products AS B ON A.product_id = B.product_id
+WHERE EXTRACT(MONTH FROM order_date) = 2 AND EXTRACT(YEAR FROM order_date) = 2020
+GROUP BY product_name
+HAVING SUM(unit) >= 100;
 
 
 --EX7
+SELECT A.page_id
+FROM pages AS A
+FULL JOIN page_likes AS B ON A.page_id = B.page_id
+WHERE B.page_id IS NULL
+ORDER BY A.page_id;
+
 
 
 
