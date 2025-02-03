@@ -40,7 +40,14 @@ LEFT JOIN age_breakdown AS B ON A.user_id = B.user_id
 GROUP BY age_bucket;
 
 --EX4
+SELECT 
+customer_id
+FROM customer_contracts AS A
+LEFT JOIN products AS B ON A.product_id = B.product_id
+GROUP BY customer_id
+HAVING COUNT(DISTINCT product_category) = 3;
 
+--EX5
 
 
 
