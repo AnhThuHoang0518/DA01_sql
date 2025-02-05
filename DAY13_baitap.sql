@@ -142,25 +142,29 @@ AND salary < 30000;
 --EX10: Giong cau 1
 
 --EX11
+-- Write your PostgreSQL query statement below
 WITH
 TOP_USER AS
 (SELECT B.name
 FROM MovieRating A
 JOIN Users B ON A.user_id = B.user_id
 GROUP BY A.user_id, B.name
-ORDER BY COUNT(*), B.name DESC
+ORDER BY COUNT(*) DESC, B.name 
 LIMIT 1)
 ,
 TOP_MOVIE AS
 (SELECT B.title
 FROM MovieRating A
 JOIN Movies B ON A.movie_id = B.movie_id
+WHERE TO_CHAR(created_at, 'YYYY-MM') = '2020-02'
 GROUP BY A.movie_id, B.title
-ORDER BY AVG(rating), B.title DESC
+ORDER BY AVG(rating) DESC, B.title 
 LIMIT 1)
-SELECT * FROM TOP_USER
+SELECT name AS results
+FROM TOP_USER
 UNION
 SELECT * FROM TOP_MOVIE;
+
 
 
 
