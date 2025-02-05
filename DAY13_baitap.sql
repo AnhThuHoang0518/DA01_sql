@@ -40,3 +40,19 @@ UNION
 SELECT * FROM TOP_2_IN_electronics
 ORDER BY category, total_spend DESC;
 
+--EX3
+WITH
+MEMBER_QUALIFIED AS
+(SELECT policy_holder_id,
+COUNT(DISTINCT case_id) AS CALL_TIME
+FROM callers
+GROUP BY policy_holder_id
+HAVING COUNT(DISTINCT case_id) >= 3)
+SELECT COUNT(*) AS policy_holder_count
+FROM MEMBER_QUALIFIED;
+
+--EX4
+
+
+
+
