@@ -83,7 +83,31 @@ COUNT(user_id) AS monthly_active_users
 FROM ACTIVE_USER;
 
 --EX6
+-- Write your PostgreSQL query statement below
+WITH
+ALL_TRANS AS
+(SELECT
+TO_CHAR(trans_date, 'YYYY-MM') AS month,
+country,
+COUNT(*) AS trans_count,
+SUM(amount) AS trans_total_amount
+FROM Transactions
+GROUP BY TO_CHAR(trans_date, 'YYYY-MM'), country)
+,
+APPROVE_TRANS AS
+(SELECT
+TO_CHAR(trans_date, 'YYYY-MM') AS month,
+country,
+COUNT(*) AS approved_count,
+SUM(amount) AS approved_total_amount
+FROM Transactions
+WHERE state = 'approved'
+GROUP BY TO_CHAR(trans_date, 'YYYY-MM'), country)
+SELECT A.month, A.country, trans_count, approved_count, trans_total_amount, approved_total_amount   
+FROM ALL_TRANS A 
+JOIN APPROVE_TRANS B ON A.month = B.month AND A.country = B.country
 
+--EX7
 
 
 
