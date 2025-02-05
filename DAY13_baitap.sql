@@ -122,6 +122,15 @@ RIGHT JOIN FIRST_YEAR B
 ON A.year = B.year AND A.product_id = B.product_id;
 
 --EX8
+-- Write your PostgreSQL query statement below
+SELECT customer_id
+FROM Customer
+GROUP BY customer_id
+HAVING COUNT(DISTINCT product_key) = (SELECT COUNT(*) FROM Product);
+
+--EX9
+
+
 
 
 
