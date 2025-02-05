@@ -142,6 +142,26 @@ AND salary < 30000;
 --EX10: Giong cau 1
 
 --EX11
+WITH
+TOP_USER AS
+(SELECT B.name
+FROM MovieRating A
+JOIN Users B ON A.user_id = B.user_id
+GROUP BY A.user_id, B.name
+ORDER BY COUNT(*), B.name DESC
+LIMIT 1)
+,
+TOP_MOVIE AS
+(SELECT B.title
+FROM MovieRating A
+JOIN Movies B ON A.movie_id = B.movie_id
+GROUP BY A.movie_id, B.title
+ORDER BY AVG(rating), B.title DESC
+LIMIT 1)
+SELECT * FROM TOP_USER
+UNION
+SELECT * FROM TOP_MOVIE;
+
 
 
 --EX12
