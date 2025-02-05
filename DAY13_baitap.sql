@@ -10,3 +10,6 @@ HAVING COUNT(*) >= 2
 )
 SELECT COUNT(DISTINCT company_id) AS duplicate_companies
 FROM ALL_DUP_JL;
+
+
+--EX2
