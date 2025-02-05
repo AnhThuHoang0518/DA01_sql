@@ -139,7 +139,39 @@ SELECT employee_id FROM Employees
 WHERE manager_id IN (SELECT manager_id FROM MNG_LEFT)
 AND salary < 30000;
 
---EX10
+--EX10: Giong cau 1
+
+--EX11
+
+
+--EX12
+-- Write your PostgreSQL query statement below
+WITH
+REQUEST_SIDE AS
+(SELECT requester_id AS id,
+COUNT(*) AS SL
+FROM RequestAccepted
+GROUP BY requester_id)
+,
+ACCEPT_SIDE AS
+(SELECT accepter_id AS id,
+COUNT(*) AS SL
+FROM RequestAccepted
+GROUP BY accepter_id)
+,
+UNION_TABLE AS
+(SELECT * FROM REQUEST_SIDE 
+UNION ALL
+SELECT * FROM ACCEPT_SIDE)
+
+SELECT id,
+SUM(SL) AS NUM
+FROM UNION_TABLE
+GROUP BY id
+ORDER BY NUM DESC
+LIMIT 1;
+
+
 
 
 
