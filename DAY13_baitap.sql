@@ -129,6 +129,20 @@ GROUP BY customer_id
 HAVING COUNT(DISTINCT product_key) = (SELECT COUNT(*) FROM Product);
 
 --EX9
+-- Write your PostgreSQL query statement below
+WITH MNG_LEFT AS
+(SELECT DISTINCT manager_id
+FROM Employees
+WHERE manager_id NOT IN (SELECT employee_id FROM Employees))
+
+SELECT employee_id FROM Employees
+WHERE manager_id IN (SELECT manager_id FROM MNG_LEFT)
+AND salary < 30000;
+
+--EX10
+
+
+
 
 
 
