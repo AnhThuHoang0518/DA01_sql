@@ -29,3 +29,13 @@ FROM transactions) AS T_ORDER
 WHERE TRANS_ORDER = 3;
 
 --EX4
+SELECT transaction_date, user_id,
+COUNT(*) AS purchase_count
+FROM (SELECT *,
+RANK() OVER(PARTITION BY user_id ORDER BY transaction_date DESC) AS TRANS_RANK
+FROM user_transactions) AS T_RANK
+WHERE TRANS_RANK = 1
+GROUP BY transaction_date, user_id
+ORDER BY transaction_date;
+
+--EX5
