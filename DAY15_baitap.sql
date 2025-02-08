@@ -69,6 +69,24 @@ FROM MIN_DIFF
 WHERE MIN_DIFF <= 10;
 
 --EX7
+WITH 
+TOTAL_REV AS
+(SELECT category, product,
+SUM(spend) AS total_spend
+FROM product_spend
+WHERE EXTRACT(YEAR FROM transaction_date) = 2022
+GROUP BY category, product)
+,
+RANKING AS
+(SELECT *,
+ROW_NUMBER() OVER(PARTITION BY category ORDER BY total_spend DESC) AS SPEND_RANK
+FROM TOTAL_REV)
+SELECT category, product, total_spend
+FROM RANKING
+WHERE SPEND_RANK <= 2;
+
+--EX8
+
 
 
 
