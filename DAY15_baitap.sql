@@ -22,3 +22,10 @@ WHERE M_ORDER = 1
 ORDER BY issued_amount DESC;
 
 --EX3
+SELECT user_id, spend, transaction_date
+FROM(SELECT *,
+ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY transaction_date) AS TRANS_ORDER
+FROM transactions) AS T_ORDER
+WHERE TRANS_ORDER = 3;
+
+--EX4
