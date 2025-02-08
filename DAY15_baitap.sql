@@ -85,9 +85,22 @@ SELECT category, product, total_spend
 FROM RANKING
 WHERE SPEND_RANK <= 2;
 
---EX8
+--EX8: Câu này e check kết quả bị sai ạ
+WITH TIME_APPEAR AS
+(SELECT B.artist_id, A.* ,
+COUNT(*) OVER(PARTITION BY B.artist_id) AS TIME_APPEAR
+FROM global_song_rank A
+JOIN songs B ON A.song_id = B.song_id
+WHERE rank <= 10)
 
-
+SELECT artist_name, rank AS artist_rank
+FROM (SELECT artist_id, TIME_APPEAR,
+DENSE_RANK() OVER(ORDER BY time_appear DESC) AS RANK
+FROM TIME_APPEAR
+GROUP BY artist_id, TIME_APPEAR) AS A
+JOIN artists B ON A.artist_id = B.artist_id
+WHERE RANK <= 5
+ORDER BY RANK, artist_name;
 
 
 
