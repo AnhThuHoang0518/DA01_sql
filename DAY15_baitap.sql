@@ -12,3 +12,13 @@ ROUND((curr_year_spend/LAG(curr_year_spend) OVER(PARTITION BY product_id ORDER B
 FROM TWT_curr_year_spend;
 
 --EX2
+WITH MONTH_ORDER AS
+(SELECT *,
+ROW_NUMBER() OVER(PARTITION BY card_name ORDER BY issue_year, issue_month) AS M_ORDER
+FROM monthly_cards_issued)
+SELECT card_name, issued_amount
+FROM MONTH_ORDER
+WHERE M_ORDER = 1
+ORDER BY issued_amount DESC;
+
+--EX3
