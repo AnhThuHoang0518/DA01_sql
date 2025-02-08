@@ -48,6 +48,27 @@ AVG(tweet_count) OVER(PARTITION BY user_id
 FROM tweets) AS ROLLING_AVG;
 
 --EX6
+/*SELECT *
+FROM (SELECT *,
+ROW_NUMBER() OVER(PARTITION BY merchant_id, credit_card_id, amount) AS REPEATED
+FROM transactions) AS REPEATED_PAYMENT
+WHERE repeated != 1;*/
+
+WITH 
+TIME_DIFF AS
+(SELECT *,
+transaction_timestamp - LAG(transaction_timestamp) OVER(PARTITION BY merchant_id, credit_card_id, amount ORDER BY transaction_timestamp)	AS TIME_DIFF
+FROM transactions)
+,
+MIN_DIFF AS
+(SELECT *,
+EXTRACT(HOUR FROM TIME_DIFF)*60 + EXTRACT(MINUTE FROM TIME_DIFF) AS MIN_DIFF
+FROM TIME_DIFF)
+SELECT COUNT(*) AS payment_count
+FROM MIN_DIFF
+WHERE MIN_DIFF <= 10;
+
+--EX7
 
 
 
