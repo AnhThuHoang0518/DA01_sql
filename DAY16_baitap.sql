@@ -48,3 +48,20 @@ FROM CONSECUTIVE_STUDENTS) AS SWITCH_SEAT
 ORDER BY consecutive_id, SWITCH1;
 
 --EX4
+# Write your MySQL query statement below
+WITH GROUP_BY_DAY AS
+(SELECT visited_on,
+SUM(amount) AS ALL_DAY_REV
+FROM Customer
+GROUP BY visited_on)
+
+SELECT *,
+ROUND(amount*1.0/7,2) AS average_amount
+FROM (SELECT visited_on,
+SUM(ALL_DAY_REV) OVER(ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS amount
+FROM GROUP_BY_DAY) AS A
+WHERE visited_on >= '2019-01-07'
+ORDER BY visited_on;
+
+--EX5
+
