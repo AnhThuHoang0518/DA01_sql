@@ -19,3 +19,17 @@ COUNT(*),2) AS immediate_percentage
 FROM FIRST_ORDER_TABLE;
 
 --EX2
+# Write your MySQL query statement below
+WITH A AS
+(SELECT *,
+ROW_NUMBER() OVER (PARTITION BY player_id ORDER BY event_date) AS LOGIN_RANK,
+LEAD(event_date) OVER(PARTITION BY player_id ORDER BY event_date) - event_date AS DATE_DIFF
+FROM Activity)
+
+SELECT 
+ROUND((SELECT COUNT(*) FROM A WHERE DATE_DIFF = 1)*100.0
+/COUNT(*),2) AS fraction
+FROM A
+WHERE LOGIN_RANK = 1;
+
+--EX3
