@@ -117,5 +117,37 @@ ORDER BY CUMULATIVE_WEIGHT DESC
 LIMIT 1;
 
 --EX8
+# Write your MySQL query statement below
+/*SELECT *,
+(CASE
+WHEN change_date = '2019-08-16' THEN '2019-08-16'
+)
+FROM
+(SELECT *,
+RANK() OVER(PARTITION BY product_id ORDER BY change_date) AS DATE_ORDER
+FROM Products) AS A*/
+WITH UP_TO_DATE_TABLE AS
+(SELECT *,
+(CASE
+WHEN MAX(change_date) OVER(PARTITION BY product_id) <= '2019-08-16' THEN MAX(change_date) OVER(PARTITION BY product_id)
+WHEN MIN(change_date) OVER(PARTITION BY product_id) <= '2019-08-16' AND MAX(change_date) OVER(PARTITION BY product_id) >= '2019-08-16' THEN 
+(SELECT MAX(change_date) FROM Products B WHERE A.product_id = B.product_id AND change_date <= '2019-08-16')
+WHEN MIN(change_date) OVER(PARTITION BY product_id) >= '2019-08-16' THEN ''
+END) AS UP_TO_DATE
+FROM Products A)
+,
+PRODUCT_DATE AS
+(SELECT product_id, UP_TO_DATE
+FROM UP_TO_DATE_TABLE 
+GROUP BY product_id, UP_TO_DATE)
+
+SELECT A.product_id,
+(CASE
+WHEN new_price IS NOT NULL THEN new_price
+ELSE 10
+END) AS price
+FROM PRODUCT_DATE A
+LEFT JOIN Products B ON A.product_id = B.product_id AND A.UP_TO_DATE = B.change_date;
+
 
 
