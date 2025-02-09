@@ -96,4 +96,15 @@ JOIN NOT_SAME_LOCATION B
 ON A.pid = B.pid;
  
 --EX6
+# Write your MySQL query statement below
+SELECT Department, Employee, Salary
+FROM
+(SELECT B.name AS Department, A.name AS Employee, A.salary AS Salary, 
+DENSE_RANK() OVER(PARTITION BY B.id ORDER BY A.salary DESC) AS SALARY_RANK
+FROM Employee A
+JOIN Department B ON A.departmentId = B.id) AS SALARY_RANK_TABLE   
+WHERE SALARY_RANK <= 3; 
+
+--EX7
+
 
