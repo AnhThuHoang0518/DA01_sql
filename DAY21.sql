@@ -23,6 +23,7 @@ ORDER BY A.month_year
 
 --2.
 
+
 WITH A AS
 (SELECT FORMAT_DATE('%Y-%m', created_at) AS month_year,
 SUM(sale_price) AS REV
@@ -40,7 +41,9 @@ SELECT A.month_year, distinct_users,
 ROUND(REV/ORDERS,2) AS average_order_value
 FROM A
 JOIN B ON A.month_year = B.month_year
+WHERE A.month_year BETWEEN '2019-01' AND '2022-04'
 ORDER BY A.month_year
+
 
 /*INSIGHT:
 - Tổng số người dùng khác nhau mỗi tháng tăng theo thời gian nhưng AOV không thay đổi nhiều
