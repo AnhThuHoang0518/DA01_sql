@@ -83,6 +83,34 @@ SELECT COUNT(*) FROM old;
 */
 
 --4.
+CREATE TEMP TABLE A AS
+(SELECT DISTINCT product_id, product_name, cost 
+FROM bigquery-public-data.thelook_ecommerce.inventory_items
+ORDER BY product_id);
+
+WITH CTE AS
+(SELECT A.product_id, product_name, cost, sale_price,
+FORMAT_DATE('%Y-%m', delivered_at) AS month_year,
+sale_price - cost AS profit
+FROM bigquery-public-data.thelook_ecommerce.order_items AS B
+JOIN A ON B.product_id = A.product_id
+WHERE status = 'Complete')
+,
+CTE2 AS
+(SELECT month_year, product_id, product_name,
+ROUND(SUM(sale_price),2) AS sales,
+ROUND(SUM(cost),2) AS cost,
+ROUND(SUM(profit),2) AS profit,
+FROM CTE
+GROUP BY month_year, product_id, product_name)
+
+SELECT * FROM
+(SELECT *,
+DENSE_RANK() OVER(PARTITION BY month_year ORDER BY profit DESC) AS RANK
+FROM CTE2) AS A
+WHERE RANK <= 5;
+
+--5.
 
 /*INSIGHT:
 - 
