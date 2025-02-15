@@ -3,8 +3,7 @@ WITH A AS
 (SELECT FORMAT_DATE('%Y-%m', created_at) AS month_year,
 COUNT(*) AS total_user
 FROM `bigquery-public-data.thelook_ecommerce.orders` 
-GROUP BY FORMAT_DATE('%Y-%m', created_at)
-ORDER BY month_year)
+GROUP BY FORMAT_DATE('%Y-%m', created_at))
 ,
 B AS 
 (SELECT FORMAT_DATE('%Y-%m', delivered_at) AS month_year,
