@@ -107,12 +107,20 @@ GROUP BY month_year, product_id, product_name)
 SELECT * FROM
 (SELECT *,
 DENSE_RANK() OVER(PARTITION BY month_year ORDER BY profit DESC) AS RANK
-FROM CTE2) AS A
+FROM CTE2) AS B
 WHERE RANK <= 5;
 
 --5.
+WITH CTE AS(
+SELECT *, FORMAT_DATE('%Y-%m-%d', delivered_at) AS DATES
+FROM bigquery-public-data.thelook_ecommerce.order_items A
+JOIN bigquery-public-data.thelook_ecommerce.products B ON A.product_id = B.id
+WHERE status = 'Complete' AND FORMAT_DATE('%Y-%m-%d', delivered_at) BETWEEN '2022-04-15' AND '2022-07-16')
 
-/*INSIGHT:
-- 
-*/
+SELECT DATES, category AS product_categories,
+ROUND(SUM(sale_price),2) AS revenue
+FROM CTE
+GROUP BY DATES, category
+ORDER BY DATES
+
 
