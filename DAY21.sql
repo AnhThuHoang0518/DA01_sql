@@ -1,7 +1,7 @@
 --1.
 WITH A AS
 (SELECT FORMAT_DATE('%Y-%m', created_at) AS month_year,
-COUNT(DISTINCT user_id) AS total_user
+COUNT(*) AS total_user
 FROM `bigquery-public-data.thelook_ecommerce.orders` 
 GROUP BY FORMAT_DATE('%Y-%m', created_at)
 ORDER BY month_year)
