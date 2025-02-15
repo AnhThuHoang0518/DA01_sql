@@ -50,13 +50,20 @@ ORDER BY A.month_year
 */
 
 --3.
+CREATE TEMP TABLE all_user AS
+(SELECT
+DISTINCT user_id
+FROM bigquery-public-data.thelook_ecommerce.orders
+WHERE FORMAT_DATE('%Y-%m', created_at) BETWEEN '2019-01' AND '2022-04');
+
 CREATE TEMP TABLE young AS
 (SELECT first_name, last_name, gender, age,
 'youngest' AS tag
 FROM
 (SELECT first_name, last_name, gender, age,
 DENSE_RANK() OVER(PARTITION BY gender ORDER BY age) AS AGE_RANK
-FROM bigquery-public-data.thelook_ecommerce.users) AS A
+FROM bigquery-public-data.thelook_ecommerce.users A
+RIGHT JOIN all_user B ON B.user_id = A.id) AS C
 WHERE AGE_RANK = 1);
 
 CREATE TEMP TABLE old AS
@@ -65,7 +72,8 @@ CREATE TEMP TABLE old AS
 FROM
 (SELECT first_name, last_name, gender, age,
 DENSE_RANK() OVER(PARTITION BY gender ORDER BY age DESC) AS AGE_RANK
-FROM bigquery-public-data.thelook_ecommerce.users) AS A
+FROM bigquery-public-data.thelook_ecommerce.users A
+RIGHT JOIN all_user B ON B.user_id = A.id) AS C
 WHERE AGE_RANK = 1);
 
 SELECT * FROM young
@@ -78,8 +86,8 @@ SELECT COUNT(*) FROM old;
 
 
 /*INSIGHT:
-- Trẻ nhất là 12 tuổi, số lượng 1629 người
-- Lớn nhất là 70 tuổi, số lượng 1713 người
+- Trẻ nhất là 12 tuổi, số lượng 310 người
+- Lớn nhất là 70 tuổi, số lượng 322 người
 */
 
 --4.
